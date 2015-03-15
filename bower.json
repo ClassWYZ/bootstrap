@@ -9,7 +9,7 @@
     "bootstrap"
   ],
   "license": "MIT",
-  "ignore": ["docs", "misc", "node_modules", "template", "src", ".*", "*.md"],
+  "ignore": ["docs", "misc", "node_modules", "template", "src", ".*", "*.md", "*.js"],
   "description": "Native AngularJS (Angular) directives for Bootstrap.",
   "version": "2.12.1",
   "main": [

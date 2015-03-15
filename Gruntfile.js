@@ -30,11 +30,11 @@ module.exports = function(grunt) {
       tplmodules: 'angular.module("ui.bootstrap.tpls", [<%= tplModules %>]);',
       all: 'angular.module("ui.bootstrap", ["ui.bootstrap.tpls", <%= srcModules %>]);',
       banner: ['/*',
-               ' * <%= pkg.name %>',
-               ' * <%= pkg.homepage %>\n',
-               ' * Version: <%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>',
-               ' * License: <%= pkg.license %>',
-               ' */\n'].join('\n')
+        ' * <%= pkg.name %>',
+        ' * <%= pkg.homepage %>\n',
+        ' * Version: <%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>',
+        ' * License: <%= pkg.license %>',
+        ' */\n'].join('\n')
     },
     delta: {
       docs: {
@@ -96,6 +96,7 @@ module.exports = function(grunt) {
       },
       dist:{
         src:['<%= concat.dist.dest %>'],
+        //dest:'<%= dist %>/<%= filename %>-<%= pkg.version %>.min.js'
         dest:'<%= dist %>/<%= filename %>.min.js'
       },
       dist_tpls:{
@@ -266,25 +267,25 @@ module.exports = function(grunt) {
   function dependenciesForModule(name) {
     var deps = [];
     grunt.file.expand('src/' + name + '/*.js')
-    .map(grunt.file.read)
-    .forEach(function(contents) {
-      //Strategy: find where module is declared,
-      //and from there get everything inside the [] and split them by comma
-      var moduleDeclIndex = contents.indexOf('angular.module(');
-      var depArrayStart = contents.indexOf('[', moduleDeclIndex);
-      var depArrayEnd = contents.indexOf(']', depArrayStart);
-      var dependencies = contents.substring(depArrayStart + 1, depArrayEnd);
-      dependencies.split(',').forEach(function(dep) {
-        if (dep.indexOf('ui.bootstrap.') > -1) {
-          var depName = dep.trim().replace('ui.bootstrap.','').replace(/['"]/g,'');
-          if (deps.indexOf(depName) < 0) {
-            deps.push(depName);
-            //Get dependencies for this new dependency
-            deps = deps.concat(dependenciesForModule(depName));
+      .map(grunt.file.read)
+      .forEach(function(contents) {
+        //Strategy: find where module is declared,
+        //and from there get everything inside the [] and split them by comma
+        var moduleDeclIndex = contents.indexOf('angular.module(');
+        var depArrayStart = contents.indexOf('[', moduleDeclIndex);
+        var depArrayEnd = contents.indexOf(']', depArrayStart);
+        var dependencies = contents.substring(depArrayStart + 1, depArrayEnd);
+        dependencies.split(',').forEach(function(dep) {
+          if (dep.indexOf('ui.bootstrap.') > -1) {
+            var depName = dep.trim().replace('ui.bootstrap.','').replace(/['"]/g,'');
+            if (deps.indexOf(depName) < 0) {
+              deps.push(depName);
+              //Get dependencies for this new dependency
+              deps = deps.concat(dependenciesForModule(depName));
+            }
           }
-        }
+        });
       });
-    });
     return deps;
   }
 
@@ -312,14 +313,14 @@ module.exports = function(grunt) {
     grunt.config('srcModules', _.pluck(modules, 'moduleName'));
     grunt.config('tplModules', _.pluck(modules, 'tplModules').filter(function(tpls) { return tpls.length > 0;} ));
     grunt.config('demoModules', modules
-      .filter(function(module) {
-        return module.docs.md && module.docs.js && module.docs.html;
-      })
-      .sort(function(a, b) {
-        if (a.name < b.name) { return -1; }
-        if (a.name > b.name) { return 1; }
-        return 0;
-      })
+        .filter(function(module) {
+          return module.docs.md && module.docs.js && module.docs.html;
+        })
+        .sort(function(a, b) {
+          if (a.name < b.name) { return -1; }
+          if (a.name > b.name) { return 1; }
+          return 0;
+        })
     );
 
     var moduleFileMapping = _.clone(modules, true);
@@ -333,10 +334,10 @@ module.exports = function(grunt) {
     var tpljsFiles = _.pluck(modules, 'tpljsFiles');
     //Set the concat task to concatenate the given src modules
     grunt.config('concat.dist.src', grunt.config('concat.dist.src')
-                 .concat(srcFiles));
+      .concat(srcFiles));
     //Set the concat-with-templates task to concat the given src & tpl modules
     grunt.config('concat.dist_tpls.src', grunt.config('concat.dist_tpls.src')
-                 .concat(srcFiles).concat(tpljsFiles));
+      .concat(srcFiles).concat(tpljsFiles));
 
     grunt.task.run(['concat', 'uglify', 'makeModuleMappingFile', 'makeRawFilesJs']);
   });
@@ -374,7 +375,7 @@ module.exports = function(grunt) {
     var genRawFilesJs = require('./misc/raw-files-generator');
 
     genRawFilesJs(grunt, jsFilename, _.flatten(grunt.config('concat.dist_tpls.src')),
-                  grunt.config('meta.banner'));
+      grunt.config('meta.banner'));
   });
 
   function setVersion(type, suffix) {
