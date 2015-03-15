@@ -9,11 +9,11 @@
     "bootstrap"
   ],
   "license": "MIT",
-  "ignore": ["docs", "misc", "node_modules", "template", "src"],
+  "ignore": ["docs", "misc", "node_modules", "template", "src", ".*", "*.md"],
   "description": "Native AngularJS (Angular) directives for Bootstrap.",
   "version": "2.12.1",
   "main": [
-    "./ui-bootstrap-tpls.js"
+    "dist/ui-bootstrap-tpls.js"
   ],
   "dependencies": {
     "angular": ">=1 <1.3.0"

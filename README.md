@@ -2,6 +2,7 @@
 
 - Add popover-html-unsafe directive into popover module;
 - Add popover-html-unsafe-popup template into template/popover;
+- bower.json tracks dist/
 
 # following is original documentation
 
